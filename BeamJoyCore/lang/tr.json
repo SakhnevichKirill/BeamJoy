@@ -1270,6 +1270,7 @@
         "WP": "KN {wp}",
         "Lap": "Tur {lap}",
         "wpDifference": "+{wpDifference}KN",
+        "driftScore": "Drift puanı",
         "finalLapFlash": "Son Tur",
         "finishFlashSolo": "Bitirdiniz!",
         "finishFlashMulti": "#{place} olarak bitirdiniz!",

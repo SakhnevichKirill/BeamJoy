@@ -189,6 +189,8 @@ local function onDriftEnded(playerID, driftScore)
             end
         end
     end
+
+    BJCScenario.onDriftEnded(playerID, driftScore)
 end
 
 ---@param senderID integer

@@ -1,4 +1,5 @@
 ---@class BJCScenarioRace: BJCScenario
+local DriftScoreBoard = require("scenarii/DriftScoreBoard")
 local M = {
     name = "Race",
 
@@ -55,6 +56,8 @@ local M = {
         leaderboard = {},
         finished = {},   -- list of finished players
         eliminated = {}, -- list of eliminated players (leaved, disconnected, dnf, etc)
+        ---@type BJDriftScoreBoard
+        driftBoard = DriftScoreBoard.new(),
     },
 
     countInvalidVehicles = {}, -- count to detect invalid setting config
@@ -89,6 +92,7 @@ local function stopRace()
         leaderboard = {},
         finished = {}, -- list of finished players
         eliminated = {},
+        driftBoard = DriftScoreBoard.new(),
     }
 
     BJCScenario.CurrentScenario = nil
@@ -120,6 +124,9 @@ local function prepareLeaderboard()
             }
         })
     end
+
+    M.race.driftBoard:syncParticipants(M.grid.participants)
+    M.race.driftBoard:resetScores()
 end
 
 local function startRace()
@@ -139,6 +146,7 @@ local function startRace()
     end
 
     prepareLeaderboard()
+    local driftBoard = M.race.driftBoard
     M.race = {
         raceTimer = nil,
         startTime = GetCurrentTime() + (BJCConfig.Data.Race.RaceCountdown),
@@ -150,6 +158,7 @@ local function startRace()
         leaderboard = M.race.leaderboard,
         finished = {},
         eliminated = {},
+        driftBoard = driftBoard,
     }
     M.countInvalidVehicles = {}
     M.state = M.STATES.RACE
@@ -323,9 +332,27 @@ local function parseLeaderboard()
             lapTime = lapTime,
             lapStartTime = lapStartTime,
             diff = diff,
+            driftScore = M.race.driftBoard:getScore(lb[1]),
         })
     end
     return res
+end
+
+---@param playerID integer
+---@param driftScore number
+local function onDriftEnded(playerID, driftScore)
+    if M.state ~= M.STATES.RACE then
+        return
+    end
+    if not table.includes(M.grid.participants, playerID) then
+        return
+    end
+    if table.includes(M.race.finished, playerID) or table.includes(M.race.eliminated, playerID) then
+        return
+    end
+
+    M.race.driftBoard:addScore(playerID, driftScore)
+    BJCTx.cache.invalidate(BJCTx.ALL_PLAYERS, BJCCache.CACHES.RACE)
 end
 
 local function sortLeaderboard()
@@ -777,5 +804,6 @@ M.canSpawnVehicle = canSpawnOrEditVehicle
 M.canEditVehicle = canSpawnOrEditVehicle
 M.onVehicleDeleted = onVehicleDeleted
 M.onPlayerDisconnect = onPlayerDisconnect
+M.onDriftEnded = onDriftEnded
 
 return M
