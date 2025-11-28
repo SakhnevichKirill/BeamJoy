@@ -1146,6 +1146,7 @@
         "WP": "КП {wp}",
         "Lap": "Круг {laps}",
         "wpDifference": "+{wpDifference}CP",
+        "driftScore": "Очки дрифта",
         "finalLapFlash": "Финальный круг",
         "finishFlashSolo": "Вы закончили!",
         "finishFlashMulti": "Вы закончили #{place} !",

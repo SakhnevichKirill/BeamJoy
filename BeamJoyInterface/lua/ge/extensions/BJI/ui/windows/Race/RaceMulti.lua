@@ -69,6 +69,7 @@ local W = {
             wpCounter = "",
             lapCounter = "",
             wpDifference = "",
+            driftScore = "",
 
             gridTimeout = "",
             gridAboutToTimeout = "",
@@ -119,6 +120,7 @@ local function updateLabels()
     W.cache.labels.wpCounter = BJI_Lang.get("races.play.WP")
     W.cache.labels.lapCounter = BJI_Lang.get("races.play.Lap")
     W.cache.labels.wpDifference = BJI_Lang.get("races.play.wpDifference")
+    W.cache.labels.driftScore = BJI_Lang.get("races.play.driftScore")
 
     W.cache.labels.gridTimeout = BJI_Lang.get("races.play.timeout")
     W.cache.labels.gridAboutToTimeout = BJI_Lang.get("races.play.aboutToTimeout")
@@ -252,6 +254,7 @@ local function updateCache(ctxt)
             else
                 timeLabel = BJI.Utils.UI.RaceDelay(lb.time or 0)
             end
+            local driftScoreLabel = string.format("%d", math.floor((lb.driftScore or 0) + 0.5))
             return {
                 playerID = lb.playerID,
                 playerName = player.playerName,
@@ -264,6 +267,7 @@ local function updateCache(ctxt)
                 wpDiff = wpDiff,
                 timeLabel = timeLabel,
                 timeColor = timeColor,
+                driftLabel = driftScoreLabel,
             }
         end)
 
@@ -537,6 +541,7 @@ local function drawRace(ctxt)
             { label = "##race-name" },
             { label = "##race-lap" },
             { label = "##race-wp" },
+            { label = W.cache.labels.driftScore },
             { label = "##race-times", flags = { TABLE_COLUMNS_FLAGS.WIDTH_STRETCH } }
         }) then
         W.cache.data.bodyData:forEach(function(el)
@@ -564,6 +569,8 @@ local function drawRace(ctxt)
                 SameLine()
                 Text(el.wpDiff, { color = BJI.Utils.Style.TEXT_COLORS.ERROR })
             end
+            TableNextColumn()
+            Text(el.driftLabel, { color = el.color })
             TableNextColumn()
             Text(el.timeLabel, { color = el.timeColor or el.color })
         end)

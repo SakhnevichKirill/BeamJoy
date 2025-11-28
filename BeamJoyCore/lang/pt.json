@@ -1273,6 +1273,7 @@
         "WP": "CP {wp}",
         "Lap": "Volta {lap}",
         "wpDifference": "+{wpDifference}CP",
+        "driftScore": "Pontuação de drift",
         "finalLapFlash": "Volta Final",
         "finishFlashSolo": "Você terminou!",
         "finishFlashMulti": "Você terminou #{place} !",

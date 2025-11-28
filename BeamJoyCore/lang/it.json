@@ -1273,6 +1273,7 @@
         "WP": "CP {wp}",
         "Lap": "Giro {lap}",
         "wpDifference": "+{wpDifference}CP",
+        "driftScore": "Punteggio drift",
         "finalLapFlash": "Giro finale",
         "finishFlashSolo": "Hai finito!",
         "finishFlashMulti": "Hai finito #{place}!",

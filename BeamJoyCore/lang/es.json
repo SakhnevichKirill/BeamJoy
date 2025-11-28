@@ -1273,6 +1273,7 @@
         "WP": "CP {wp}",
         "Lap": "Vuelta {lap}",
         "wpDifference": "+{wpDifference}CP",
+        "driftScore": "Puntuación de derrape",
         "finalLapFlash": "Vuelta final",
         "finishFlashSolo": "¡Terminaste!",
         "finishFlashMulti": "¡Terminaste #{place}!",

@@ -35,3 +35,12 @@ If you want to use my builder, your folder structure should look something like 
 ├─ BeamMP-Server.exe
 └─ ServerConfig.toml
 ```
+
+## Running Lua unit tests
+The drift scoring unit tests live under `BeamJoyCore/tests`. They rely on a Lua interpreter available in your `$PATH`.
+
+To execute the drift scoreboard tests locally:
+```
+lua BeamJoyCore/tests/DriftScoreBoard.lua
+```
+If `lua` is not installed, install Lua 5.3+ (or another compatible interpreter) for your platform before running the tests.

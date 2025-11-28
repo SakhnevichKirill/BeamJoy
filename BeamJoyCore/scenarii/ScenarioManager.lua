@@ -211,12 +211,28 @@ local function onPlayerDisconnect(player)
     -- nothing
 end
 
+---@param playerID integer
+---@param driftScore number
+local function onDriftEnded(playerID, driftScore)
+    if M.CurrentScenario and M.CurrentScenario.onDriftEnded then
+        M.CurrentScenario.onDriftEnded(playerID, driftScore)
+        return
+    end
+
+    Table(M.Hybrids):find(function(s)
+            return s.onDriftEnded and s.isParticipant(playerID)
+        end, function(s)
+            s.onDriftEnded(playerID, driftScore)
+        end)
+end
+
 M.isServerScenarioInProgress = isServerScenarioInProgress
 M.isPlayerCollisionless = isPlayerCollisionless
 M.stopServerScenarii = stopServerScenarii
 M.canSpawnVehicle = canSpawnVehicle
 M.canEditVehicle = canEditVehicle
 M.canWalk = canWalk
+M.onDriftEnded = onDriftEnded
 
 BJCEvents.addListener(BJCEvents.EVENTS.MP_VEHICLE_DELETED, onVehicleDeleted, "ScenarioManager")
 BJCEvents.addListener(BJCEvents.EVENTS.PLAYER_DISCONNECTED, onPlayerDisconnect, "ScenarioManager")
